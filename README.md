@@ -1,4 +1,4 @@
-# Проект Pythia Parser Florida
+# Проект Pythia Parser Colorado
 
 ## Установка и запуск
 
@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 ### 4. Запуск приложения
 
-После установки всех зависимостей и настройки переменных окружения, запускаем скрипт `Pythia_parser_FL.py`:
+После установки всех зависимостей и настройки переменных окружения, запускаем скрипт `Pythia_parser_CO.py`:
 
 ```bash
 python Pythia_parser_CO.py
