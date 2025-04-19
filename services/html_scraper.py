@@ -12,7 +12,7 @@ load_dotenv()
 STATE = os.getenv("STATE")
 logger = setup_logger("scraper")
 
-def get_cookies_from_website(url: str) -> Dict[str, str]:
+async def get_cookies_from_website(url: str) -> Dict[str, str]:
     cookies_dict = {}
     try:
         options = webdriver.ChromeOptions()
@@ -41,7 +41,7 @@ async def fetch_company_details(url: str) -> dict:
             async with session.get(url) as response:
                 response.raise_for_status()
                 html = await response.text()
-                return parse_html_details(html)
+                return await parse_html_details(html)
     except Exception as e:
         logger.error(f"Error fetching data for query '{url}': {e}")
         return []
@@ -49,7 +49,7 @@ async def fetch_company_data(query: str) -> list[dict]:
     try:
         url = "https://www.coloradosos.gov/biz/BusinessEntityCriteriaExt.do"
         payload = f'searchName={query}&cmd=Search'
-        cookies = get_cookies_from_website(url)
+        cookies = await get_cookies_from_website(url)
         headers = {
             'Cookie': cookies,
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -58,11 +58,11 @@ async def fetch_company_data(query: str) -> list[dict]:
             async with session.post(url, data=payload) as response:
                 response.raise_for_status()
                 html = await response.text()
-                return parse_html_search(html)
+                return await parse_html_search(html)
     except Exception as e:
         logger.error(f"Error fetching data for query '{query}': {e}")
         return []
-def parse_html_search(html: str) -> list[dict]:
+async def parse_html_search(html: str) -> list[dict]:
     soup = BeautifulSoup(html, 'html.parser')
     results = []
 
@@ -94,7 +94,7 @@ def parse_html_search(html: str) -> list[dict]:
                 return []
     return results
 
-def parse_html_details(html: str) -> dict:
+async def parse_html_details(html: str) -> dict:
     soup = BeautifulSoup(html, 'html.parser')
     name = soup.find('th', text='Name').find_next('td').get_text()
     entity_type = soup.find('th', text='Form').find_next('td').get_text()
