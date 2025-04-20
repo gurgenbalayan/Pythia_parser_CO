@@ -50,7 +50,6 @@ async def fetch_company_data(query: str) -> list[dict]:
         payload = f'searchName={query}&cmd=Search'
         cookies = await get_cookies_from_website(url)
         headers = {
-            'Cookie': cookies,
             'Content-Type': 'application/x-www-form-urlencoded'
         }
         async with aiohttp.ClientSession(cookies=cookies, headers=headers) as session:
