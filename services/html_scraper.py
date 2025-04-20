@@ -19,7 +19,6 @@ async def get_cookies_from_website(url: str) -> Dict[str, str]:
         options.headless = True
         options.page_load_strategy = 'eager'
         driver = uc.Chrome(options=options)
-
         try:
             driver.get(url)
             cookies_raw = driver.get_cookies()
@@ -101,8 +100,8 @@ async def parse_html_details(html: str) -> dict:
     status = soup.find('th', text='Status').find_next('td').get_text()
     date_registered = soup.find('th', text='Formation date').find_next('td').get_text()
     registration_number = soup.find('th', text='ID number').find_next('td').get_text()
-    principal_address = soup.find('th', text='Principal office street address').find_next('td').get_text()
-    mailing_address = soup.find('th', text='Principal office mailing address').find_next('td').get_text()
+    principal_address = soup.find('th', text='Principal office street address').find_next('td').get_text().strip()
+    mailing_address = soup.find('th', text='Principal office mailing address').find_next('td').get_text().strip()
     agent_name = soup.find_all('th', text='Name')[1].find_next('td').get_text()
 
 
