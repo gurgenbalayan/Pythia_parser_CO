@@ -29,10 +29,8 @@ async def get_cookies_from_website(url: str) -> Dict[str, str]:
             logger.error(f"WebDriver error: {e}")
         finally:
             driver.quit()
-
     except Exception as e:
         logger.error(f"Ошибка при запуске Selenium: {e}")
-
     return cookies_dict
 async def fetch_company_details(url: str) -> dict:
     try:
