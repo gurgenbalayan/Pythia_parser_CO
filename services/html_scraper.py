@@ -14,6 +14,7 @@ logger = setup_logger("scraper")
 
 async def get_cookies_from_website(url: str) -> Dict[str, str]:
     cookies_dict = {}
+    driver = None
     try:
         options = webdriver.ChromeOptions()
         options.headless = True
