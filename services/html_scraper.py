@@ -88,7 +88,6 @@ async def parse_html_search(html: str) -> list[dict]:
         if error_list:
             errors = [li.text.strip() for li in error_list if 'Error' in li.text]
             if errors:
-                print("Поиск не дал результатов. Ошибки:", errors)
                 return []
     return results
 
