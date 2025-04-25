@@ -5,7 +5,7 @@ from utils.logger import setup_logger
 import os
 
 logger = setup_logger("main")
-QUEUE_NAME = os.getenv("QUEUE_NAME")
+QUEUE_NAME = os.getenv("QUEUE_NAME", "queue_co_entities")
 async def main():
     channel = await get_channel()
     queue = await channel.declare_queue(QUEUE_NAME, durable=True)

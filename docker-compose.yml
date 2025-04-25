@@ -1,22 +1,8 @@
 services:
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
-      - "${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_PORT}"
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
-      RABBITMQ_RESULTS_QUEUE: ${RABBITMQ_RESULTS_QUEUE}
-
-  co_entities:
+  parser:
     build:
       context: ./app
     container_name: ${PARSER_ID}
-    depends_on:
-      - rabbitmq
-      - selenium
     restart: on-failure
     environment:
       RABBITMQ_HOST: ${RABBITMQ_HOST}
@@ -28,10 +14,9 @@ services:
       STATE: ${STATE}
       PARSER_ID: ${PARSER_ID}
       SELENIUM_REMOTE_URL: ${SELENIUM_REMOTE_URL}
+    networks:
+      - rabbitnet
 
-  selenium:
-    image: seleniarm/standalone-chromium
-    container_name: selenium
-    ports:
-      - "${SELENIUM_PORT}:${SELENIUM_PORT}"
-    shm_size: 2gb
+networks:
+  rabbitnet:
+    external: true
