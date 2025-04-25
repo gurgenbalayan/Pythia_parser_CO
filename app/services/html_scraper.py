@@ -6,9 +6,8 @@ from selenium.common import WebDriverException, TimeoutException
 from selenium import webdriver
 import undetected_chromedriver as uc
 from typing import Dict
-from dotenv import load_dotenv
-load_dotenv()
 
+SELENIUM_REMOTE_URL = os.getenv("SELENIUM_REMOTE_URL")
 STATE = os.getenv("STATE")
 logger = setup_logger("scraper")
 
@@ -19,7 +18,12 @@ async def get_cookies_from_website(url: str) -> Dict[str, str]:
         options = webdriver.ChromeOptions()
         options.headless = True
         options.page_load_strategy = 'eager'
-        driver = uc.Chrome(options=options)
+        options.arguments.extend(["--no-sandbox", "--disable-setuid-sandbox"])
+        driver = webdriver.Remote(
+            command_executor=SELENIUM_REMOTE_URL,
+            options=options
+        )
+        # driver = uc.Chrome(options=options)
         try:
             driver.get(url)
             cookies_raw = driver.get_cookies()
@@ -88,6 +92,7 @@ async def parse_html_search(html: str) -> list[dict]:
         if error_list:
             errors = [li.text.strip() for li in error_list if 'Error' in li.text]
             if errors:
+                print("Поиск не дал результатов. Ошибки:", errors)
                 return []
     return results
 
