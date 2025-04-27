@@ -6,7 +6,7 @@ from utils.logger import setup_logger
 import os
 
 logger = setup_logger("main")
-QUEUE_NAME = os.getenv("QUEUE_NAME", "queue_co_entities")
+QUEUE_NAME = os.getenv("QUEUE_NAME")
 
 async def main():
     channel = await get_channel()
