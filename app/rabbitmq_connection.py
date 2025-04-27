@@ -7,7 +7,6 @@ RABBITMQ_SETTINGS = {
     "login": os.getenv("RABBITMQ_USER"),
     "password": os.getenv("RABBITMQ_PASS"),
 }
-
 EXCHANGE_NAME = os.getenv("EXCHANGE_NAME")
 QUEUE_NAME = os.getenv("QUEUE_NAME")
 
@@ -27,11 +26,12 @@ async def setup_rabbitmq(channel):
         aio_pika.ExchangeType.FANOUT,
         durable=True
     )
+
     # Объявляем очередь
     queue = await channel.declare_queue(
         QUEUE_NAME,
         durable=True
     )
-    # Привязываем очередь к exchange
-    await queue.bind(exchange)
+    # Привязываем очередь к exchange по имени
+    await queue.bind(exchange.name)
     return queue
