@@ -4,7 +4,6 @@ from utils.logger import setup_logger
 import os
 from selenium.common import WebDriverException, TimeoutException
 from selenium import webdriver
-import undetected_chromedriver as uc
 from typing import Dict
 
 SELENIUM_REMOTE_URL = os.getenv("SELENIUM_REMOTE_URL")
