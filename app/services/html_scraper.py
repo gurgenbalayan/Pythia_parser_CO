@@ -39,6 +39,7 @@ async def get_cookies_from_website(url: str) -> Dict[str, str]:
         )
         # driver = uc.Chrome(options=options)
         try:
+            driver.set_page_load_timeout(30)
             driver.get(url)
             cookies_raw = driver.get_cookies()
             cookies_dict = {cookie['name']: cookie['value'] for cookie in cookies_raw}
